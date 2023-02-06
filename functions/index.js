@@ -8,6 +8,7 @@ const link = "link";
 const name = "name";
 const subname = "subname"
 
+Get_JSON_STRING();
 
 async function Get_JSON_STRING(){
 return Firebase.getAllDocumentsWithSubCollections().then(OriginalData => {
@@ -28,12 +29,22 @@ return Firebase.getAllDocumentsWithSubCollections().then(OriginalData => {
                                 if(ChapterData.docs != "info" && ChapterData.collection == collection_name){
                                     var ChapterObject = new Object();
                                     var ChapterCollectionName = ChapterData.docs;
-
-                                    ChapterObject[ChapterCollectionName] = {
-                                        "N": ChapterData.field.name,
-                                        "P": ChapterData.field.subname,
-                                        "I": ChapterData.field.index,
-                                        "L": ChapterData.field.link
+                                    //console.log(ChapterData.field.version);
+                                    if(ChapterData.field.version == undefined){
+                                        ChapterObject[ChapterCollectionName] = {
+                                            "N": ChapterData.field.name,
+                                            "P": ChapterData.field.subname,
+                                            "I": ChapterData.field.index,
+                                            "L": ChapterData.field.link
+                                        }
+                                    }else{
+                                        ChapterObject[ChapterCollectionName] = {
+                                            "N": ChapterData.field.name,
+                                            "P": ChapterData.field.subname,
+                                            "I": ChapterData.field.index,
+                                            "L": ChapterData.field.link,
+                                            "V": ChapterData.field.version
+                                        }
                                     }
                                     return ChapterObject
                                 }else{
